@@ -13,12 +13,12 @@ enum class TypeOfMessage
 
 struct CommunicationMessage
 {
-   char msg[1024]{ " " };
-   char target_user[64] {" "};
+   char msg[1024]{ " " }; // magic number move it to common.h and make it constant constexpr
+   char target_user[64] {" "}; // magic number move it to common.h and make it constant constexpr
    TypeOfMessage type;
 };
 
-enum class TypeOfAuthorization
+enum class TypeOfAuthorization // add some value for defaulting initialization
 {
    SELECTING_AN_EXISTING_USER,
    CREATE_NEW_USER
@@ -26,7 +26,7 @@ enum class TypeOfAuthorization
 
 struct AuthorizationMessage
 {
-   TypeOfAuthorization type;
+   TypeOfAuthorization type; // using uniform ("{}") initialization
    char login[MAX_LOGIN_SIZE];
    char password[MAX_PASSWORD_SIZE];
 };
