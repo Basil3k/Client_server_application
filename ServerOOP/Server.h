@@ -2,7 +2,7 @@
 
 #pragma comment(lib, "ws2_32.lib")
 #include <winsock2.h>
-#include <iostream>
+#include <iostream> // all dont using includs move to .cpp file
 #include <fstream>
 #include <map>
 #include <thread>
