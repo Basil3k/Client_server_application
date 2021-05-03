@@ -108,8 +108,7 @@ void Client::SendMessageToServer()
    CommunicationMessage message;
    size_t operating_mode{}; // use same style
    size_t ansver; // use same style
-   //here user can choise several types for sended message. User can send private message 
-   // to choised user or to all connected users
+   //here user can choise several types for sended message. User can send private message to choised user or to all connected users
    while (true) // too tricky logic. it would be simplified. maybe split into multiple methods
    {
       if (operating_mode == 1)
