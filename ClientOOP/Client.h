@@ -3,7 +3,7 @@
 #pragma warning(disable: 4996)
 #include <winsock2.h>
 
-#include <iostream>
+#include <iostream> // all dont using includs move to .cpp file
 #include <vector>
 #include <sstream>
 #include <fstream>
