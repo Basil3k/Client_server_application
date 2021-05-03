@@ -23,17 +23,17 @@ void Client::CreateNewUser()
       //here client send new login and password to server 
       send(m_connection, reinterpret_cast<char*>(&authorization), sizeof(authorization), NULL);
       // server compare they and if dont find entered login in his database save users login and password 
-      char server_answer[64];
+      char server_answer[64]; // magic number move it to common.h and make it constant constexpr
       recv(m_connection, server_answer, sizeof(server_answer), NULL);
       //then send message about it
       std::cout << server_answer << std::endl;
-      auto compare_new_user = "Authorization ok";
+      auto compare_new_user = "Authorization ok"; // move this variable to common.h and make it constant constexpr
       //here we compare server message if it right client application send in console message about it 
       if (!(std::strcmp(server_answer, compare_new_user)))
       {
          std::cout << "We saved your login and passwod." << std::endl;
          break;
-      }
+      }// implement case where user change his mind to create new user
    }
 }
 
@@ -45,8 +45,8 @@ bool Client::ConnectToServer()
       std::cerr << "ERROR_LOAD_LIBRARY" << std::endl;
       exit(1);
    }
-   m_addr.sin_addr.s_addr = inet_addr("127.0.0.1");//IP-addres
-   m_addr.sin_port = htons(8484);//port number
+   m_addr.sin_addr.s_addr = inet_addr("127.0.0.1");//IP-addres // magic number move it to common.h and make it constant constexpr
+   m_addr.sin_port = htons(8484);//port number // magic number move it to common.h and make it constant constexpr
    m_addr.sin_family = AF_INET;//type of socket(for internet protocols)
    m_connection = socket(m_addr.sin_family, SOCK_STREAM, NULL);//try connect to server 
    return (connect(m_connection, reinterpret_cast<SOCKADDR*>(&m_addr), sizeof(m_addr)) != 0);
@@ -74,6 +74,8 @@ void Client::ChoisedInitialization()
       std::cout << "Wrong choise." << std::endl;
       break;
    }
+   // this step should be only if chosen value from expected values list
+   // and implement case if chosen value not in expected list
    CreateClientHandlerThread();//after autorization create thread for recv message from server
 }
 
@@ -86,7 +88,7 @@ void Client::CreateClientHandlerThread()
 void Client::CreateSendMessageThread()
 {
    std::thread send_message_thread(&Client::SendMessageToServer, this);
-   while (true) {}
+   while (true) {} // this statement don't let correctly disconnect from the server
 }
 
 void Client::AuthorizationInServer()
@@ -104,10 +106,11 @@ void Client::SendMessageToServer()
 {
    ChoisedInitialization();
    CommunicationMessage message;
-   size_t operating_mode{};
-   size_t ansver;
-   //here user can choise several types for sended message. User can send private message to choised user or to all connected users
-   while (true)
+   size_t operating_mode{}; // use same style
+   size_t ansver; // use same style
+   //here user can choise several types for sended message. User can send private message 
+   // to choised user or to all connected users
+   while (true) // too tricky logic. it would be simplified. maybe split into multiple methods
    {
       if (operating_mode == 1)
       {
@@ -144,11 +147,11 @@ void Client::SendMessageToServer()
          operating_mode = 2;
          std::cout << "Enter message to all connected users. Or <<!reset>> to reset.\n";
          std::cin >> message.msg;
-         if (message.msg[0] != '!')
+         if (message.msg[0] != '!') // move compare order
          {
             send(m_connection, reinterpret_cast<char*>(&message), sizeof(message), NULL);
          }
-         else if (message.msg[1] == 'r')
+         else if (message.msg[1] == 'r') // move compare order
          {
             operating_mode = 0;
          }
@@ -157,7 +160,7 @@ void Client::SendMessageToServer()
       {
          message.type = TypeOfMessage::GET_USERS_LIST;
          send(m_connection, reinterpret_cast<char*>(&message), sizeof(message), NULL);
-         char users_list[1024];
+         char users_list[1024]; // magic number move it to common.h and make it constant constexpr
          recv(m_connection, users_list, sizeof(users_list), NULL);//recive user list here, not in the ClientHandler
          std::cout << "Users, which connected now in the server: " << users_list << std::endl;
       }
