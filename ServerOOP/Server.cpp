@@ -208,7 +208,7 @@ void Server::UserAuthorization(AuthorizationMessage& authorization)
    else if (authorization.type == TypeOfAuthorization::CREATE_NEW_USER)
    {
       CreateNewUser(authorization.login, authorization.password);
-   } // do somethink in else case
+   } // do something in else case
 }
 
 void Server::CreateNewThread(int m_index)
